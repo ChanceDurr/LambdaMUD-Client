@@ -6,7 +6,7 @@ import NavBar from "./Components/NavBar";
 import Login from "./Components/Login";
 import About from "./Components/About";
 import ChatBox from "./Components/ChatBox";
-import Dungeon from "./Components/Dungeon";
+import Dungeon from "./Components/Map";
 import RoomInfo from "./Components/RoomInfo";
 import Commands from "./Components/Commands";
 import { CssBaseline, Container } from "@material-ui/core";
