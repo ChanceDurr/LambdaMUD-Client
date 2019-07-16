@@ -1,4 +1,4 @@
-{
+const myData = {
     "494": [{"x": 1,"y": 8}, {"e": 457}, {"title": "Room 494"}, {"description": "There are exits to the east "}, {"items": []}], 
     "492": [{"x": 1,"y": 20}, {"e": 400}, {"title": "Room 492"}, {"description": "There are exits to the east "}, {"items": ["Pinky"]}], 
     "493": [{"x": 2,"y": 5}, {"e": 478}, {"title": "Room 493"}, {"description": "There are exits to the east "}, {"items": ["Inky"]}], 
@@ -500,3 +500,5 @@
     "471": [{"x": 24,"y": 18}, {"n": 320}, {"title": "Room 471"}, {"description": "There are exits to the north "}, {"items": ["Blinky"]}], 
     "320": [{"x": 24,"y": 19}, {"s": 471, "w": 300}, {"title": "Room 320"}, {"description": "There are exits to the south west "}, {"items": ["Clyde"]}]
 }
+
+export default myData;
