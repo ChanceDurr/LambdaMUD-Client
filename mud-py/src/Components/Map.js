@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { FlexibleXYPlot, LineSeries, MarkSeries } from "react-vis";
 import styled from "styled-components";
 
-export default class Map extends Component {
+class Map extends Component {
   state = { value: null };
 
   render() {
@@ -18,11 +18,20 @@ export default class Map extends Component {
           color="FF0"
           data={coordinates}
           style={{ cursor: "pointer" }}
-          onValueClick={point => {}}
-          onValueMouseOver={point => {}}
-          onValueMouseOut={() => {}}
+          onValueMouseOver={point => {
+            for (let key in graph) {
+              if (graph[key][0].x == point.x && graph[key][0].y) {
+                this.setState({ value: key });
+              }
+            }
+          }}
+          onValueMouseOut={() => {
+            this.setState({ value: null });
+          }}
         />
       </FlexibleXYPlot>
     );
   }
 }
+
+export default Map;
