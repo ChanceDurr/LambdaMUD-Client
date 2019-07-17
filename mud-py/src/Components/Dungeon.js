@@ -5,18 +5,23 @@ import styled from "styled-components";
 
 const StyledMap = styled.div`
   margin: auto;
-  width: 75%;
+  width: 66%;
   height: 100%;
   flex: 1;
-  padding: 3rem 4rem 2rem 3rem;
+  padding: 3rem 3rem 3rem 3rem;
   position: relative;
 `;
 
 class Map extends Component {
   render() {
+    // Create arrays to hold point coordinates and links
     const coordinates = [];
     const links = [];
+
+    // Loop through each room in the room_data object
     for (let room in room_data) {
+      // Set data equal to the first element (x, y coordinates)
+      // in each room of the room_data object
       let data = room_data[room][0];
       coordinates.push(data);
       for (let adjacentRoom in room_data[room][1]) {
@@ -45,16 +50,6 @@ class Map extends Component {
             color="FF0"
             data={coordinates}
             style={{ cursor: "pointer" }}
-            // onValueMouseOver={point => {
-            //   for (let key in graph) {
-            //     if (graph[key][0].x == point.x && graph[key][0].y) {
-            //       this.setState({ value: key });
-            //     }
-            //   }
-            // }}
-            // onValueMouseOut={() => {
-            //   this.setState({ value: null });
-            // }}
           />
         </FlexibleXYPlot>
       </StyledMap>

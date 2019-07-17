@@ -5,11 +5,9 @@ import ChatBox from "./ChatBox";
 import Dungeon from "./Dungeon";
 import Commands from "./Commands";
 import RoomInfo from "./RoomInfo";
-import { borderColor } from "@material-ui/system";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 
 const styles = theme => ({
@@ -51,7 +49,6 @@ class DungeonPage extends React.Component {
       refresh: true
     };
   }
-  // content, container, fixedheightpaper, paper
 
   getRoomInfo = () => {
     axios
@@ -72,16 +69,10 @@ class DungeonPage extends React.Component {
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     return (
-      // <Container style={{ color: 'white' }}>
-      //   <Dungeon />
-      //   <Commands />
-      //   <ChatBox />
-      //   <RoomInfo currentRoom={this.state.currentRoom} getRoomInfo={this.getRoomInfo} />
-      // </Container>
       <main className={classes.content}>
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            {/* Chart */}
+            {/* Dungeon */}
             <Grid item xs={12} md={12} lg={12}>
               <Box
                 className={classes.dungeonHeight}
@@ -94,7 +85,7 @@ class DungeonPage extends React.Component {
                 <Dungeon />
               </Box>
             </Grid>
-            {/* Recent Deposits */}
+            {/* Room Information */}
             <Grid item xs={12} md={4} lg={4}>
               <Box
                 className={fixedHeightPaper}
@@ -110,6 +101,7 @@ class DungeonPage extends React.Component {
                 />
               </Box>
             </Grid>
+            {/* Game Commands */}
             <Grid item xs={12} md={4} lg={4}>
               <Box
                 className={fixedHeightPaper}
@@ -122,6 +114,7 @@ class DungeonPage extends React.Component {
                 <Commands />
               </Box>
             </Grid>
+            {/* Chat Box */}
             <Grid item xs={12} md={4} lg={4}>
               <Box
                 className={fixedHeightPaper}
