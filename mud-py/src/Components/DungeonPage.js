@@ -14,13 +14,9 @@ class DungeonPage extends React.Component {
     };
   }
 
-  componentDidUpdate() {
-    if (this.state.refresh) {
+  getRoomInfo = () => {
       axios
-        .get(
-          'https://lambda-mud-test.herokuapp.com/api/adv/init/',
-          this.props.content
-        )
+        .get('https://lambda-mud-test.herokuapp.com/api/adv/init/', this.props.content)
         .then(data => {
           this.setState({ currentRoom: data.data, refresh: false });
         })
@@ -28,7 +24,6 @@ class DungeonPage extends React.Component {
           console.log(err);
         });
     }
-  }
 
   directionMove = e => {
     const direction = e.target.name;
@@ -46,14 +41,13 @@ class DungeonPage extends React.Component {
         console.log(err.response);
       });
   };
-
   render() {
     return (
       <Container style={{ color: 'white' }}>
         <Dungeon />
         <Commands directionMove={this.directionMove} />
         <ChatBox />
-        <RoomInfo currentRoom={this.state.currentRoom} />
+        <RoomInfo currentRoom={this.state.currentRoom} getRoomInfo={this.getRoomInfo} />
       </Container>
     );
   }
