@@ -16,27 +16,46 @@ class DungeonPage extends React.Component {
 
   componentDidUpdate() {
     if (this.state.refresh) {
-    axios
-      .get('https://lambda-mud-test.herokuapp.com/api/adv/init/', this.props.content)
-      .then(data => {
-        this.setState({ currentRoom: data.data, refresh: false });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+      axios
+        .get(
+          'https://lambda-mud-test.herokuapp.com/api/adv/init/',
+          this.props.content
+        )
+        .then(data => {
+          this.setState({ currentRoom: data.data, refresh: false });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 
-  render() {
+  directionMove = e => {
+    const direction = e.target.name;
+    console.log(this.props.content);
+    axios
+      .post(
+        'https://lambda-mud-test.herokuapp.com/api/adv/move/',
+        { direction: direction },
+        this.props.content
+      )
+      .then(data => {
+        console.log(data.data);
+      })
+      .catch(err => {
+        console.log(err.response);
+      });
+  };
 
+  render() {
     return (
       <Container style={{ color: 'white' }}>
         <Dungeon />
-        <Commands />
+        <Commands directionMove={this.directionMove} />
         <ChatBox />
         <RoomInfo currentRoom={this.state.currentRoom} />
       </Container>
-    )
+    );
   }
 }
 
