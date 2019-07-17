@@ -5,14 +5,17 @@ import ChatBox from "./ChatBox";
 import Dungeon from "./Dungeon";
 import Commands from "./Commands";
 import RoomInfo from "./RoomInfo";
+import { borderColor } from "@material-ui/system";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
 
 const styles = theme => ({
   root: {
-    display: "flex"
+    display: "flex",
+    fontFamily: "Chakra Petch"
   },
   title: {
     flexGrow: 1
@@ -20,8 +23,8 @@ const styles = theme => ({
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    height: "100vh"
-    // overflow: "auto"
+    height: "100vh",
+    overflow: "auto"
   },
   container: {
     paddingTop: theme.spacing(4),
@@ -80,28 +83,56 @@ class DungeonPage extends React.Component {
           <Grid container spacing={3}>
             {/* Chart */}
             <Grid item xs={12} md={12} lg={12}>
-              <Paper className={classes.dungeonPaper}>
+              <Box
+                className={classes.dungeonHeight}
+                border={4}
+                borderColor="#0136be"
+                borderRadius="5px"
+                backgroundColor="black"
+                color="white"
+              >
                 <Dungeon />
-              </Paper>
+              </Box>
             </Grid>
             {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
+            <Grid item xs={12} md={4} lg={4}>
+              <Box
+                className={fixedHeightPaper}
+                border={4}
+                borderColor="#0136be"
+                borderRadius="5px"
+                backgroundColor="black"
+                color="white"
+              >
                 <RoomInfo
                   currentRoom={this.state.currentRoom}
                   getRoomInfo={this.getRoomInfo}
                 />
-              </Paper>
+              </Box>
             </Grid>
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
+            <Grid item xs={12} md={4} lg={4}>
+              <Box
+                className={fixedHeightPaper}
+                border={4}
+                borderColor="#0136be"
+                borderRadius="5px"
+                backgroundColor="black"
+                color="white"
+              >
                 <Commands />
-              </Paper>
+              </Box>
             </Grid>
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
+            <Grid item xs={12} md={4} lg={4}>
+              <Box
+                className={fixedHeightPaper}
+                border={4}
+                borderColor="#0136be"
+                borderRadius="5px"
+                backgroundColor="black"
+                color="white"
+              >
                 <ChatBox />
-              </Paper>
+              </Box>
             </Grid>
           </Grid>
         </Container>
