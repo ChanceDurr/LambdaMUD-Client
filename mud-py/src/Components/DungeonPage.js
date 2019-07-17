@@ -9,6 +9,11 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
+import Pusher from 'pusher-js';
+
+const socket = new Pusher("836565419bb3c5e47b4b", {
+  cluster: "us3",
+});
 
 const styles = theme => ({
   root: {
@@ -46,9 +51,28 @@ class DungeonPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      refresh: true
+      refresh: true,
+      message: "",
+      currentRoom: 0
     };
   }
+
+  say = () => {
+    const { message, currentRoom } = this.state;
+
+    axios
+      .post(
+        "https://localhost:8080/api/adv/say/",
+        { message, room: currentRoom }
+      )
+      .then(data => {
+        this.setState({ message: "" });
+        // And some kind of alert?
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   getRoomInfo = () => {
     axios
@@ -58,6 +82,11 @@ class DungeonPage extends React.Component {
       )
       .then(data => {
         this.setState({ currentRoom: data.data, refresh: false });
+
+        const channel = socket.subscribe(data.data);
+        channel.bind('message', data => {
+          this.setState({ incomingMessage: JSON.stringify(data) });
+        });
       })
       .catch(err => {
         console.log(err);
@@ -66,6 +95,7 @@ class DungeonPage extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { currentRoom, incomingMessage } = this.state;
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     return (
@@ -96,7 +126,7 @@ class DungeonPage extends React.Component {
                 color="white"
               >
                 <RoomInfo
-                  currentRoom={this.state.currentRoom}
+                  currentRoom={currentRoom}
                   getRoomInfo={this.getRoomInfo}
                 />
               </Box>
@@ -124,7 +154,7 @@ class DungeonPage extends React.Component {
                 backgroundColor="black"
                 color="white"
               >
-                <ChatBox />
+                <ChatBox incomingMessage={incomingMessage} onSpeak={message => this.setState({ message })} />
               </Box>
             </Grid>
           </Grid>
