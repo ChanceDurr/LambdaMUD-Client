@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ChatBox() {
+function ChatBox({ incomingMessage, onSpeak }) {
   return <div> This is an alert box for incoming messages and outgoing input box </div>;
 }
 
