@@ -1,14 +1,16 @@
-import React from "react";
-import axios from "axios";
-import clsx from "clsx";
-import ChatBox from "./ChatBox";
-import Dungeon from "./Dungeon";
-import Commands from "./Commands";
-import RoomInfo from "./RoomInfo";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
+import React from 'react';
+import axios from 'axios';
+import clsx from 'clsx';
+import ChatBox from './ChatBox';
+import Dungeon from './Dungeon';
+import Commands from './Commands';
+import RoomInfo from './RoomInfo';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+
+import { mudAddress } from '../address';
 import Pusher from 'pusher-js';
 
 const socket = new Pusher("836565419bb3c5e47b4b", {
@@ -17,8 +19,8 @@ const socket = new Pusher("836565419bb3c5e47b4b", {
 
 const styles = theme => ({
   root: {
-    display: "flex",
-    fontFamily: "Chakra Petch"
+    display: 'flex',
+    fontFamily: 'Chakra Petch'
   },
   title: {
     flexGrow: 1
@@ -33,9 +35,9 @@ const styles = theme => ({
   },
   paper: {
     padding: theme.spacing(2),
-    display: "flex",
-    overflow: "auto",
-    flexDirection: "column"
+    display: 'flex',
+    overflow: 'auto',
+    flexDirection: 'column'
   },
   fixedHeight: {
     height: 240
@@ -74,10 +76,7 @@ class DungeonPage extends React.Component {
 
   getRoomInfo = () => {
     axios
-      .get(
-        "https://lambda-mud-test.herokuapp.com/api/adv/init/",
-        this.props.content
-      )
+      .get(mudAddress + 'adv/init/', this.props.content)
       .then(data => {
         this.setState({ currentRoom: data.data, refresh: false });
 
@@ -88,6 +87,21 @@ class DungeonPage extends React.Component {
       })
       .catch(err => {
         console.log(err);
+      });
+  };
+
+  directionMove = e => {
+    const direction = e.target.name;
+    console.log(this.props.content);
+    axios
+      .post(mudAddress + 'adv/move/', this.props.content, {
+        direction: direction
+      })
+      .then(data => {
+        console.log(data.data);
+      })
+      .catch(err => {
+        console.log(err.response.data);
       });
   };
 
@@ -139,7 +153,7 @@ class DungeonPage extends React.Component {
                 backgroundColor="black"
                 color="white"
               >
-                <Commands />
+                <Commands directionMove={this.directionMove} />
               </Box>
             </Grid>
             {/* Chat Box */}
