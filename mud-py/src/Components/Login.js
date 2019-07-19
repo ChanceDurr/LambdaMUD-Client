@@ -134,7 +134,7 @@ class Login extends React.Component {
     const { passwordValid } = this.state;
 
     return (
-      <Container maxWidth="xs" style={{ color: 'gold' }}>
+      <Container maxWidth="xs" style={{ color: 'gold', height: "calc(100vh - 168px)" }}>
         {this.state.register ? (
           <Register
             registerChange={this.registerChange}

@@ -1,7 +1,20 @@
 import React from 'react';
+import styled from 'styled-components';
+
+const FlexColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const FlexRow = styled.div`
+  display: flex;
+  flex-direction: row;
+`
 
 function ChatBox({ incomingMessage, onSpeak }) {
-  return <div> This is an alert box for incoming messages and outgoing input box </div>;
+  return <FlexColumn>
+    <FlexRow></FlexRow>
+  </FlexColumn>;
 }
 
 export default ChatBox;
