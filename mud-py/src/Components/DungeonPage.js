@@ -57,12 +57,16 @@ class DungeonPage extends React.Component {
     };
   }
 
+  handleMessageInput = e => {
+    this.setState({ message: e.target.value })
+  };
+
   say = () => {
     const { message, currentRoom } = this.state;
 
     axios
       .post(
-        "https://localhost:8080/api/adv/say/",
+        "http://localhost:8080/api/adv/say/",
         { message, room: currentRoom }
       )
       .then(data => {
@@ -82,6 +86,7 @@ class DungeonPage extends React.Component {
 
         const channel = socket.subscribe(data.data);
         channel.bind('message', data => {
+          console.log('incoming message', data)
           this.setState({ incomingMessage: JSON.stringify(data) });
         });
       })
@@ -107,7 +112,7 @@ class DungeonPage extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { currentRoom, incomingMessage } = this.state;
+    const { currentRoom, incomingMessage, message } = this.state;
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     return (
@@ -166,7 +171,7 @@ class DungeonPage extends React.Component {
                 backgroundColor="black"
                 color="white"
               >
-                <ChatBox incomingMessage={incomingMessage} onSpeak={message => this.setState({ message })} />
+                <ChatBox handleMessageInput={this.handleMessageInput} message={message} incomingMessage={incomingMessage} onSpeak={this.say} />
               </Box>
             </Grid>
           </Grid>
