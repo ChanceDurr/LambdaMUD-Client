@@ -10,6 +10,8 @@ import {
 } from '@material-ui/core';
 import axios from 'axios';
 
+import {mudAddress} from '../address'
+
 const useStylesLogin = makeStyles(theme => ({
   root: {
     border: '1px solid #e2e2e1',
@@ -89,7 +91,7 @@ class Login extends React.Component {
     e.preventDefault();
     const { username, password } = this.state;
     axios
-      .post('https://lambda-mud-test.herokuapp.com/api/login/', {
+      .post(mudAddress + 'login/', {
         username: username,
         password: password
       })
@@ -107,7 +109,7 @@ class Login extends React.Component {
     const { username, password, passwordCheck } = this.state;
     if (password === passwordCheck) {
       axios
-        .post('https://lambda-mud-test.herokuapp.com/api/registration/', {
+        .post(mudAddress + 'registration/', {
           username: username,
           password1: password,
           password2: passwordCheck

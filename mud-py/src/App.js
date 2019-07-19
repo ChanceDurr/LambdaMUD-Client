@@ -19,14 +19,16 @@ class App extends React.Component {
 
     this.content = {
       headers: {
-        Authorization: ''
-      }
+        Authorization: '',
+        "Content-Type": "application/json"
+      },
     };
   }
 
   componentDidMount() {
     const token = localStorage.getItem('Authorization');
-    this.content.headers.Authorization = 'Token ' + token;
+    const newContent = this.content
+    newContent.headers.Authorization = 'Token ' + token;
     if (token) {
       this.setState({ loggedIn: true });
     } else {

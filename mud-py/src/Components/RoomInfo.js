@@ -15,7 +15,7 @@ function RoomInfo(props) {
       // border={2}
       // borderColor="#7b68ee"
       display="flex"
-      // flexDirection="column"
+      flexDirection="column"
       // justifyContent="space-between"
       // p="10px"
     >
