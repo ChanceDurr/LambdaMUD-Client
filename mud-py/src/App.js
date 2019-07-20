@@ -19,14 +19,14 @@ class App extends React.Component {
 
     this.content = {
       headers: {
-        Authorization: ''
+        Authorization: ""
       }
     };
   }
 
   componentDidMount() {
-    const token = localStorage.getItem('Authorization');
-    this.content.headers.Authorization = 'Token ' + token;
+    const token = localStorage.getItem("Authorization");
+    this.content.headers.Authorization = "Token " + token;
     if (token) {
       this.setState({ loggedIn: true });
     } else {
@@ -41,11 +41,11 @@ class App extends React.Component {
   };
 
   login = () => {
-    if (localStorage.getItem('Authorization')) {
-      const token = localStorage.getItem('Authorization');
-      this.content.headers.Authorization = 'Token ' + token;
+    if (localStorage.getItem("Authorization")) {
+      const token = localStorage.getItem("Authorization");
+      this.content.headers.Authorization = "Token " + token;
       this.setState({ loggedIn: true });
-      this.props.history.push('/dungeon');
+      this.props.history.push("/dungeon");
     }
   };
 
