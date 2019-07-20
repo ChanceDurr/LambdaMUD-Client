@@ -94,7 +94,6 @@ class DungeonPage extends React.Component {
     axios
       .get(mudAddress + "adv/init/", this.props.content)
       .then(data => {
-        console.log(data.data);
         this.setState({
           currentRoom: data.data,
           refresh: false,
