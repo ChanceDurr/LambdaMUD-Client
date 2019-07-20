@@ -44,6 +44,8 @@ class Map extends Component {
             />
           ))}
           <MarkSeries
+            current={this.props.currentRoom}
+            highlight="#1b00ff"
             strokeWidth={3}
             opacity="1"
             size="3"

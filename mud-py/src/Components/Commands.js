@@ -1,15 +1,15 @@
-import React from 'react';
-import { Box, Button, withStyles, Fab } from '@material-ui/core';
+import React from "react";
+import { Box, Button, withStyles, Fab } from "@material-ui/core";
 
 const CommandButton = withStyles({
   root: {
-    backgroundColor: 'darkorange',
-    color: 'black',
-    fontSize: '1.5rem',
-    border: '6px solid firebrick',
-    '&:hover': {
-      backgroundColor: '#cc6c00',
-      borderColor: 'darkred'
+    backgroundColor: "darkorange",
+    color: "black",
+    fontSize: "1.5rem",
+    border: "6px solid firebrick",
+    "&:hover": {
+      backgroundColor: "#cc6c00",
+      borderColor: "darkred"
     }
   }
 })(Fab);
