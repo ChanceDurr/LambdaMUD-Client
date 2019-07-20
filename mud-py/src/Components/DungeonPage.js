@@ -51,7 +51,6 @@ class DungeonPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      refresh: true,
       message: "",
       currentRoom: 0,
       messageFeed: [],
@@ -96,7 +95,6 @@ class DungeonPage extends React.Component {
       .then(data => {
         this.setState({
           currentRoom: data.data,
-          refresh: false,
           player: data.data.name
         });
 
@@ -125,10 +123,11 @@ class DungeonPage extends React.Component {
         this.props.content
       )
       .then(data => {
+        this.getRoomInfo()
         console.log(data.data);
       })
       .catch(err => {
-        console.log(err.response.data);
+        console.log(err);
       });
   };
 
