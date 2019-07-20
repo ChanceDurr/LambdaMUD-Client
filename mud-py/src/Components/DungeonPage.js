@@ -51,7 +51,6 @@ class DungeonPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      refresh: true,
       message: "",
       currentRoom: 0
     };
@@ -78,8 +77,7 @@ class DungeonPage extends React.Component {
     axios
       .get(mudAddress + 'adv/init/', this.props.content)
       .then(data => {
-        this.setState({ currentRoom: data.data, refresh: false });
-
+        this.setState({ currentRoom: data.data });
         const channel = socket.subscribe(data.data);
         channel.bind('message', data => {
           this.setState({ incomingMessage: JSON.stringify(data) });
@@ -91,17 +89,18 @@ class DungeonPage extends React.Component {
   };
 
   directionMove = e => {
-    const direction = e.target.name;
-    console.log(this.props.content);
+    const direction = e.currentTarget.name;
+    console.log(this.props.content, direction, this.state.currentRoom);
     axios
-      .post(mudAddress + 'adv/move/', this.props.content, {
+      .post(mudAddress + 'adv/move/', {
         direction: direction
-      })
+      }, this.props.content)
       .then(data => {
+        this.getRoomInfo()
         console.log(data.data);
       })
       .catch(err => {
-        console.log(err.response.data);
+        console.log(err);
       });
   };
 

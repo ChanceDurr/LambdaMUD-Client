@@ -19,16 +19,14 @@ class App extends React.Component {
 
     this.content = {
       headers: {
-        Authorization: '',
-        "Content-Type": "application/json"
-      },
+        Authorization: ''
+      }
     };
   }
 
   componentDidMount() {
     const token = localStorage.getItem('Authorization');
-    const newContent = this.content
-    newContent.headers.Authorization = 'Token ' + token;
+    this.content.headers.Authorization = 'Token ' + token;
     if (token) {
       this.setState({ loggedIn: true });
     } else {
@@ -44,15 +42,17 @@ class App extends React.Component {
 
   login = () => {
     if (localStorage.getItem('Authorization')) {
+      const token = localStorage.getItem('Authorization');
+      this.content.headers.Authorization = 'Token ' + token;
       this.setState({ loggedIn: true });
-      this.props.history.push('/dungeon')
+      this.props.history.push('/dungeon');
     }
   };
 
   logout = () => {
     localStorage.removeItem('Authorization');
     this.setState({ loggedIn: false });
-    this.props.history.push('/login')
+    this.props.history.push('/login');
   };
 
   render() {
@@ -62,8 +62,16 @@ class App extends React.Component {
         <NavBar tempChangeLogin={this.tempChangeLogin} />
         <Route exact path="/" component={Landing} />
         <Route path="/about" component={About} />
-        <Route path="/login" render={() => <Login login={this.login} /> }  />
-        <Route path="/dungeon" render={() => <DungeonPage state={this.state} content={this.content} />} />
+        <Route path="/login" render={() => <Login login={this.login} />} />
+        <Route
+          path="/dungeon"
+          render={() => (
+            <DungeonPage
+              state={this.state}
+              content={this.content}
+            />
+          )}
+        />
       </div>
     );
   }

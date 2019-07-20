@@ -33,7 +33,7 @@ function RoomInfo(props) {
         ) : (
           <Box width="45%">You see no items here</Box>
         )}
-        {players ? (
+        {players && players.length !== 0 ? (
           <Box width="45%" textAlign="center">
             Players who are in the room with you:{" "}
             <Divider style={{ backgroundColor: "#fff" }} variant="middle" />

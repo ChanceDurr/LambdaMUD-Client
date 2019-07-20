@@ -27,7 +27,7 @@ function Commands(props) {
       alignItems="center"
       p="10px"
     >
-      <CommandButton onClick={props.directionMove} name="n">
+      <CommandButton onClick={val => props.directionMove(val)} name="n">
         N
       </CommandButton>
       <CommandButton onClick={props.directionMove} name="s">
