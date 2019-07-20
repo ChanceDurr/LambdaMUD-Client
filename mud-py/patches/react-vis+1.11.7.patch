@@ -1,0 +1,60 @@
+diff --git a/node_modules/react-vis/es/plot/series/mark-series.js b/node_modules/react-vis/es/plot/series/mark-series.js
+index f518e51..ee09d52 100644
+--- a/node_modules/react-vis/es/plot/series/mark-series.js
++++ b/node_modules/react-vis/es/plot/series/mark-series.js
+@@ -53,7 +53,7 @@ var MarkSeries = function (_AbstractSeries) {
+ 
+   _createClass(MarkSeries, [{
+     key: '_renderCircle',
+-    value: function _renderCircle(d, i, strokeWidth, style, scalingFunctions) {
++    value: function _renderCircle(d, i, strokeWidth, style, scalingFunctions, current, highlight) {
+       var _this2 = this;
+ 
+       var fill = scalingFunctions.fill,
+@@ -61,17 +61,18 @@ var MarkSeries = function (_AbstractSeries) {
+           size = scalingFunctions.size,
+           stroke = scalingFunctions.stroke,
+           x = scalingFunctions.x,
+-          y = scalingFunctions.y;
+-
++          y = scalingFunctions.y,
++          isHighlighted = current.toString() === i.toString();
+ 
+       var attrs = {
+         r: size ? size(d) : DEFAULT_SIZE,
++        id: i,
+         cx: x(d),
+         cy: y(d),
+         style: _extends({
+           opacity: opacity ? opacity(d) : DEFAULT_OPACITY,
+-          stroke: stroke && stroke(d),
+-          fill: fill && fill(d),
++          stroke: isHighlighted ? highlight : (stroke && stroke(d)),
++          fill: isHighlighted ? highlight : (fill && fill(d)),
+           strokeWidth: strokeWidth || DEFAULT_STROKE_WIDTH
+         }, style),
+         key: i,
+@@ -102,10 +103,12 @@ var MarkSeries = function (_AbstractSeries) {
+           marginLeft = _props.marginLeft,
+           marginTop = _props.marginTop,
+           strokeWidth = _props.strokeWidth,
+-          style = _props.style;
++          style = _props.style,
++          current = _props.current,
++          highlight = _props.highlight;
+ 
+ 
+-      if (this.props.nullAccessor) {
++        if (this.props.nullAccessor) {
+         warning('nullAccessor has been renamed to getNull', true);
+       }
+ 
+@@ -139,7 +142,7 @@ var MarkSeries = function (_AbstractSeries) {
+           transform: 'translate(' + marginLeft + ',' + marginTop + ')'
+         },
+         data.map(function (d, i) {
+-          return getNull(d) && _this3._renderCircle(d, i, strokeWidth, style, scalingFunctions);
++          return getNull(d) && _this3._renderCircle(d, i, strokeWidth, style, scalingFunctions, current, highlight);
+         })
+       );
+     }
