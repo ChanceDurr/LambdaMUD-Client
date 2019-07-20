@@ -1,26 +1,26 @@
-import React from 'react';
-import axios from 'axios';
-import clsx from 'clsx';
-import ChatBox from './ChatBox';
-import Dungeon from './Dungeon';
-import Commands from './Commands';
-import RoomInfo from './RoomInfo';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+import React from "react";
+import axios from "axios";
+import clsx from "clsx";
+import ChatBox from "./ChatBox";
+import Dungeon from "./Dungeon";
+import Commands from "./Commands";
+import RoomInfo from "./RoomInfo";
+import withStyles from "@material-ui/core/styles/withStyles";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
 
-import { mudAddress } from '../address';
-import Pusher from 'pusher-js';
+import { mudAddress } from "../address";
+import Pusher from "pusher-js";
 
 const socket = new Pusher("836565419bb3c5e47b4b", {
-  cluster: "us3",
+  cluster: "us3"
 });
 
 const styles = theme => ({
   root: {
-    display: 'flex',
-    fontFamily: 'Chakra Petch'
+    display: "flex",
+    fontFamily: "Chakra Petch"
   },
   title: {
     flexGrow: 1
@@ -35,9 +35,9 @@ const styles = theme => ({
   },
   paper: {
     padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column'
+    display: "flex",
+    overflow: "auto",
+    flexDirection: "column"
   },
   fixedHeight: {
     height: 240
@@ -52,20 +52,34 @@ class DungeonPage extends React.Component {
     super(props);
     this.state = {
       message: "",
-      currentRoom: 0
+      currentRoom: 0,
+      messageFeed: [],
+      player: ""
     };
   }
 
+  handleMessageInput = e => {
+    e.persist();
+    if (e.target.value) {
+      this.setState({ message: e.target.value });
+    }
+    if (e.key && e.key === "Enter") {
+      this.say();
+    }
+  };
+
   say = () => {
-    const { message, currentRoom } = this.state;
+    const { message, currentRoom, messageFeed, player } = this.state;
 
     axios
       .post(
-        "https://localhost:8080/api/adv/say/",
-        { message, room: currentRoom }
+        mudAddress + "adv/say/",
+        { message, room: currentRoom.id.toString() },
+        this.props.content
       )
       .then(data => {
-        this.setState({ message: "" });
+        messageFeed.push({ message, player });
+        this.setState({ message: "", messageFeed });
         // And some kind of alert?
       })
       .catch(err => {
@@ -74,13 +88,23 @@ class DungeonPage extends React.Component {
   };
 
   getRoomInfo = () => {
+    const { messageFeed } = this.state;
+
     axios
-      .get(mudAddress + 'adv/init/', this.props.content)
+      .get(mudAddress + "adv/init/", this.props.content)
       .then(data => {
-        this.setState({ currentRoom: data.data });
-        const channel = socket.subscribe(data.data);
-        channel.bind('message', data => {
-          this.setState({ incomingMessage: JSON.stringify(data) });
+        console.log(data.data);
+        this.setState({
+          currentRoom: data.data,
+          player: data.data.name
+        });
+
+        const channel = socket.subscribe(data.data.id.toString());
+        channel.bind("say", message => {
+          if (message.player !== this.state.player) {
+            messageFeed.push(message);
+            this.setState({ messageFeed });
+          }
         });
       })
       .catch(err => {
@@ -90,11 +114,15 @@ class DungeonPage extends React.Component {
 
   directionMove = e => {
     const direction = e.currentTarget.name;
-    console.log(this.props.content, direction, this.state.currentRoom);
+
     axios
-      .post(mudAddress + 'adv/move/', {
-        direction: direction
-      }, this.props.content)
+      .post(
+        mudAddress + "adv/move/",
+        {
+          direction
+        },
+        this.props.content
+      )
       .then(data => {
         this.getRoomInfo()
         console.log(data.data);
@@ -106,7 +134,7 @@ class DungeonPage extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { currentRoom, incomingMessage } = this.state;
+    const { currentRoom, messageFeed, message } = this.state;
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     return (
@@ -165,7 +193,12 @@ class DungeonPage extends React.Component {
                 backgroundColor="black"
                 color="white"
               >
-                <ChatBox incomingMessage={incomingMessage} onSpeak={message => this.setState({ message })} />
+                <ChatBox
+                  handleMessageInput={this.handleMessageInput}
+                  message={message}
+                  messageFeed={messageFeed}
+                  onSpeak={this.say}
+                />
               </Box>
             </Grid>
           </Grid>

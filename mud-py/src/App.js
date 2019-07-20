@@ -1,13 +1,13 @@
-import React from 'react';
-import { withRouter } from 'react-router';
-import { Route } from 'react-router-dom';
-import Landing from './Components/Landing';
-import NavBar from './Components/NavBar';
-import Login from './Components/Login';
-import About from './Components/About';
-import DungeonPage from './Components/DungeonPage';
-import { CssBaseline } from '@material-ui/core';
-import './App.css';
+import React from "react";
+import { withRouter } from "react-router";
+import { Route } from "react-router-dom";
+import Landing from "./Components/Landing";
+import NavBar from "./Components/NavBar";
+import Login from "./Components/Login";
+import About from "./Components/About";
+import DungeonPage from "./Components/DungeonPage";
+import { CssBaseline } from "@material-ui/core";
+import "./App.css";
 
 class App extends React.Component {
   constructor(props) {
@@ -50,9 +50,9 @@ class App extends React.Component {
   };
 
   logout = () => {
-    localStorage.removeItem('Authorization');
+    localStorage.removeItem("Authorization");
     this.setState({ loggedIn: false });
-    this.props.history.push('/login');
+    this.props.history.push("/login");
   };
 
   render() {
@@ -66,10 +66,7 @@ class App extends React.Component {
         <Route
           path="/dungeon"
           render={() => (
-            <DungeonPage
-              state={this.state}
-              content={this.content}
-            />
+            <DungeonPage state={this.state} content={this.content} />
           )}
         />
       </div>
