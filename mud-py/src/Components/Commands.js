@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, withStyles, Fab } from "@material-ui/core";
 
+// This provides the buttons with some terrible 80's colors
 const CommandButton = withStyles({
   root: {
     backgroundColor: "darkorange",
@@ -41,6 +42,7 @@ function Commands(props) {
         W
       </CommandButton>
     </Box>
+      {/* this ternary displays a directional error message  */}
       {props.error_msg === "" ? null : <div> {props.error_msg} </div>}
     </Box>
   );
