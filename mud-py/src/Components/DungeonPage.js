@@ -89,7 +89,7 @@ class DungeonPage extends React.Component {
   };
 
   getRoomInfo = () => {
-    const { messageFeed } = this.state;
+    const { currentRoom, messageFeed } = this.state;
 
     axios
       .get(mudAddress + "adv/init/", this.props.content)
@@ -97,9 +97,14 @@ class DungeonPage extends React.Component {
         this.setState({
           currentRoom: data.data,
           player: data.data.name,
-          message: "",
+          message: '',
           messageFeed: []
         });
+
+        if (data.data.players && data.data.players.length) {
+          this.setState({ message: `${data.data.name} has arrived!`})
+          this.say()
+        }
 
         const channel = socket.subscribe(data.data.id.toString());
         channel.bind("say", message => {
