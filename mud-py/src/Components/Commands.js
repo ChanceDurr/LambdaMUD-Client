@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, withStyles, Fab } from "@material-ui/core";
+import { Box, withStyles, Fab } from "@material-ui/core";
 
 const CommandButton = withStyles({
   root: {

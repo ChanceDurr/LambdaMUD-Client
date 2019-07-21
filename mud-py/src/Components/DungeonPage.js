@@ -89,7 +89,7 @@ class DungeonPage extends React.Component {
   };
 
   getRoomInfo = () => {
-    const { currentRoom, messageFeed } = this.state;
+    const { messageFeed } = this.state;
 
     axios
       .get(mudAddress + "adv/init/", this.props.content)
@@ -121,7 +121,6 @@ class DungeonPage extends React.Component {
 
   directionMove = e => {
     const direction = e.currentTarget.name;
-    const {messageFeed, player} = this.state
 
     axios
       .post(
@@ -132,7 +131,6 @@ class DungeonPage extends React.Component {
         this.props.content
       )
       .then(data => {
-        console.log(data)
         const error_msg = data.data.error_msg
         if (error_msg === '') {
           socket.unsubscribe(this.state.currentRoom.id.toString());
@@ -163,7 +161,6 @@ class DungeonPage extends React.Component {
                 border={4}
                 borderColor="#0136be"
                 borderRadius="5px"
-                backgroundColor="black"
                 color="white"
               >
                 <Dungeon currentRoom={currentRoom.id.toString()} />
@@ -176,7 +173,6 @@ class DungeonPage extends React.Component {
                 border={4}
                 borderColor="#0136be"
                 borderRadius="5px"
-                backgroundColor="black"
                 color="white"
               >
                 <RoomInfo
@@ -192,7 +188,6 @@ class DungeonPage extends React.Component {
                 border={4}
                 borderColor="#0136be"
                 borderRadius="5px"
-                backgroundColor="black"
                 color="white"
               >
                 <Commands directionMove={this.directionMove} error_msg={this.state.error_msg} />
@@ -205,7 +200,6 @@ class DungeonPage extends React.Component {
                 border={4}
                 borderColor="#0136be"
                 borderRadius="5px"
-                backgroundColor="black"
                 color="white"
               >
                 <ChatBox

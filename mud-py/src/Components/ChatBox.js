@@ -56,8 +56,8 @@ function ChatBox({ messageFeed, onSpeak, handleMessageInput, message }) {
           through the rooms you can speak to other players in the same room as
           you. Good muck and glob speed!
         </span>
-        {messageFeed.map(feed => (
-          <span>
+        {messageFeed.map((feed, index) => (
+          <span key={index}>
             {feed.player}: {feed.message}
           </span>
         ))}
