@@ -88,19 +88,28 @@ class DungeonPage extends React.Component {
       });
   };
 
+  // updates room info on load or direction change, and broadcasts players arrival if there are others in the room
   getRoomInfo = () => {
     const { messageFeed } = this.state;
 
+    // call to get the info for the room
     axios
       .get(mudAddress + "adv/init/", this.props.content)
       .then(data => {
         this.setState({
           currentRoom: data.data,
           player: data.data.name,
-          message: "",
+          message: '',
           messageFeed: []
         });
 
+        // broadcasts arrival if others are around
+        if (data.data.players && data.data.players.length) {
+          this.setState({ message: `${data.data.name} has arrived!`})
+          this.say()
+        }
+
+        // binds the player to the current room's chat channel
         const channel = socket.subscribe(data.data.id.toString());
         channel.bind("say", message => {
           if (message.player !== this.state.player) {
@@ -114,9 +123,9 @@ class DungeonPage extends React.Component {
       });
   };
 
+  // moves the player to a new room when a direction command is given
   directionMove = e => {
     const direction = e.currentTarget.name;
-    const {messageFeed, player} = this.state
 
     axios
       .post(
@@ -127,7 +136,8 @@ class DungeonPage extends React.Component {
         this.props.content
       )
       .then(data => {
-        console.log(data)
+
+        // if there is an error message from a direction command, state reflects that
         const error_msg = data.data.error_msg
         if (error_msg === '') {
           socket.unsubscribe(this.state.currentRoom.id.toString());
@@ -158,7 +168,6 @@ class DungeonPage extends React.Component {
                 border={4}
                 borderColor="#0136be"
                 borderRadius="5px"
-                backgroundColor="black"
                 color="white"
               >
                 <Dungeon currentRoom={currentRoom.id.toString()} />
@@ -171,7 +180,6 @@ class DungeonPage extends React.Component {
                 border={4}
                 borderColor="#0136be"
                 borderRadius="5px"
-                backgroundColor="black"
                 color="white"
               >
                 <RoomInfo
@@ -187,7 +195,6 @@ class DungeonPage extends React.Component {
                 border={4}
                 borderColor="#0136be"
                 borderRadius="5px"
-                backgroundColor="black"
                 color="white"
               >
                 <Commands directionMove={this.directionMove} error_msg={this.state.error_msg} />
@@ -200,7 +207,6 @@ class DungeonPage extends React.Component {
                 border={4}
                 borderColor="#0136be"
                 borderRadius="5px"
-                backgroundColor="black"
                 color="white"
               >
                 <ChatBox

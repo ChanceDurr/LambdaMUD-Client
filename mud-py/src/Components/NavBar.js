@@ -51,7 +51,6 @@ function NavBar(props) {
             to="/login"
             style={{ textDecoration: "none" }}
             color="secondary"
-            // onClick={props.tempChangeLogin}
             className={classes.button}
           >
             Login

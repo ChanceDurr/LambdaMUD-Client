@@ -34,12 +34,7 @@ class App extends React.Component {
     }
   }
 
-  tempChangeLogin = () => {
-    this.setState(prev => {
-      return { loggedIn: !prev.loggedIn };
-    });
-  };
-
+  // changes to dungeon and marks user as logged in
   login = () => {
     if (localStorage.getItem("Authorization")) {
       const token = localStorage.getItem("Authorization");
@@ -49,6 +44,7 @@ class App extends React.Component {
     }
   };
 
+  // changes to login screen and removes token from storage
   logout = () => {
     localStorage.removeItem("Authorization");
     this.setState({ loggedIn: false });

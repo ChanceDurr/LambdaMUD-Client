@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import pyman_logo from "../assets/pyman_logo@2x.png";
+// import pyman_logo from "../assets/pyman_logo@2x.png";
 import "./landing.css";
 
 export default class Landing extends Component {

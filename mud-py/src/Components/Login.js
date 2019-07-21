@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import axios from 'axios';
 
-import {mudAddress} from '../address'
+import { mudAddress } from '../address';
 
 const useStylesLogin = makeStyles(theme => ({
   root: {
@@ -30,6 +30,7 @@ const useStylesLogin = makeStyles(theme => ({
   focused: {}
 }));
 
+// the login/register buttons
 const PrimaryButton = withStyles({
   root: {
     backgroundColor: 'darkorange',
@@ -43,6 +44,7 @@ const PrimaryButton = withStyles({
   }
 })(Button);
 
+// switch to login or register button
 const SecondaryButton = withStyles({
   root: {
     backgroundColor: '#222',
@@ -77,16 +79,19 @@ class Login extends React.Component {
     };
   }
 
+  // toggle for switching to/fro registration component
   registerChange = () => {
     this.setState(prev => {
       return { register: !prev.register };
     });
   };
 
+  // changes the state as UN and PW are typed
   changeHandler = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  // logs in if successfully entered proper credentials
   loginHandler = e => {
     e.preventDefault();
     const { username, password } = this.state;
@@ -104,6 +109,7 @@ class Login extends React.Component {
       });
   };
 
+  // registers new user and logs them in
   registrationHandler = e => {
     e.preventDefault();
     const { username, password, passwordCheck } = this.state;
@@ -121,7 +127,8 @@ class Login extends React.Component {
         .catch(err => {
           console.log(err);
         });
-    } else {
+    } // if typed passwords don't match
+    else {
       this.setState(prev => {
         return {
           passwordCheckValid: !prev.passwordCheckValid,
@@ -136,8 +143,12 @@ class Login extends React.Component {
     const { passwordValid } = this.state;
 
     return (
-      <Container maxWidth="xs" style={{ color: 'gold', height: "calc(100vh - 168px)" }}>
-        {this.state.register ? (
+      <Container
+        maxWidth="xs"
+        style={{ color: 'gold', height: 'calc(100vh - 168px)' }}
+      >
+        {// register coponenet displays on toggle
+        this.state.register ? (
           <Register
             registerChange={this.registerChange}
             changeHandler={this.changeHandler}

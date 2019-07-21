@@ -2,25 +2,23 @@ import React from "react";
 import { Box, Divider } from "@material-ui/core";
 
 function RoomInfo(props) {
+  // ensures current room data is displayed
   if (!props.currentRoom.name) {
     props.getRoomInfo();
   }
   const { title, description, items, players } = props.currentRoom
     ? props.currentRoom
     : "";
+
   return (
     <Box
-      // width="30%"
-      // height="30vh"
-      // border={2}
-      // borderColor="#7b68ee"
       display="flex"
       flexDirection="column"
-      // justifyContent="space-between"
-      // p="10px"
     >
       <div>{title} </div>
       <div>{description}</div>
+
+      {/* If there are items, displays them, else displays "empty" message */}
       <Box height="50%" display="flex" justifyContent="space-between">
         {items ? (
           <Box width="45%" textAlign="center">
@@ -33,6 +31,7 @@ function RoomInfo(props) {
         ) : (
           <Box width="45%">You see no items here</Box>
         )}
+        {/* If there are players, displays them, else displays "empty" message */}
         {players && players.length !== 0 ? (
           <Box width="45%" textAlign="center">
             Players who are in the room with you:{" "}
