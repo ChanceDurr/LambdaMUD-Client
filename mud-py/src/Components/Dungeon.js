@@ -4,7 +4,7 @@ import room_data from "../data/room_data.js";
 import styled from "styled-components";
 
 const StyledMap = styled.div`
-  margin: auto;
+  marginLeft: 10%;
   width: 66%;
   height: 100%;
   flex: 1;
