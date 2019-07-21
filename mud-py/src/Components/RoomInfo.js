@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Divider } from "@material-ui/core";
 
 function RoomInfo(props) {
-  if (!props.currentRoom) {
+  if (!props.currentRoom.name) {
     props.getRoomInfo();
   }
   const { title, description, items, players } = props.currentRoom

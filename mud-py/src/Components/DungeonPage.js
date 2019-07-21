@@ -54,7 +54,8 @@ class DungeonPage extends React.Component {
       message: "",
       currentRoom: { id: 0 },
       messageFeed: [],
-      player: ""
+      player: "",
+      error_msg: ''
     };
   }
 
@@ -115,6 +116,7 @@ class DungeonPage extends React.Component {
 
   directionMove = e => {
     const direction = e.currentTarget.name;
+    const {messageFeed, player} = this.state
 
     axios
       .post(
@@ -125,9 +127,15 @@ class DungeonPage extends React.Component {
         this.props.content
       )
       .then(data => {
-        socket.unsubscribe(this.state.currentRoom.id.toString());
+        console.log(data)
+        const error_msg = data.data.error_msg
+        if (error_msg === '') {
+          socket.unsubscribe(this.state.currentRoom.id.toString());
 
-        this.getRoomInfo();
+          this.getRoomInfo();
+        }
+        this.setState({ error_msg })
+
       })
       .catch(err => {
         console.log(err);
@@ -182,7 +190,7 @@ class DungeonPage extends React.Component {
                 backgroundColor="black"
                 color="white"
               >
-                <Commands directionMove={this.directionMove} />
+                <Commands directionMove={this.directionMove} error_msg={this.state.error_msg} />
               </Box>
             </Grid>
             {/* Chat Box */}

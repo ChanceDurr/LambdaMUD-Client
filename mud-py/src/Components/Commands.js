@@ -16,6 +16,7 @@ const CommandButton = withStyles({
 
 function Commands(props) {
   return (
+    <Box>
     <Box
       width="100%"
       height="10vh"
@@ -39,6 +40,8 @@ function Commands(props) {
       <CommandButton onClick={props.directionMove} name="w">
         W
       </CommandButton>
+    </Box>
+      {props.error_msg === "" ? null : <div> {props.error_msg} </div>}
     </Box>
   );
 }
