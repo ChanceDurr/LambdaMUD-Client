@@ -1,26 +1,26 @@
-import React from "react";
-import axios from "axios";
-import clsx from "clsx";
-import ChatBox from "./ChatBox";
-import Dungeon from "./Dungeon";
-import Commands from "./Commands";
-import RoomInfo from "./RoomInfo";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
+import React from 'react';
+import axios from 'axios';
+import clsx from 'clsx';
+import ChatBox from './ChatBox';
+import Dungeon from './Dungeon';
+import Commands from './Commands';
+import RoomInfo from './RoomInfo';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 
-import { mudAddress } from "../address";
-import Pusher from "pusher-js";
+import { mudAddress } from '../address';
+import Pusher from 'pusher-js';
 
-const socket = new Pusher("836565419bb3c5e47b4b", {
-  cluster: "us3"
+const socket = new Pusher('836565419bb3c5e47b4b', {
+  cluster: 'us3'
 });
 
 const styles = theme => ({
   root: {
-    display: "flex",
-    fontFamily: "Chakra Petch"
+    display: 'flex',
+    fontFamily: 'Chakra Petch'
   },
   title: {
     flexGrow: 1
@@ -35,15 +35,15 @@ const styles = theme => ({
   },
   paper: {
     padding: theme.spacing(2),
-    display: "flex",
-    overflow: "auto",
-    flexDirection: "column"
+    display: 'flex',
+    overflow: 'auto',
+    flexDirection: 'column'
   },
   fixedHeight: {
     height: 240
   },
   dungeonHeight: {
-    height: 720
+    height: "80vh"
   }
 });
 
@@ -51,10 +51,10 @@ class DungeonPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      message: "",
+      message: '',
       currentRoom: { id: 0 },
       messageFeed: [],
-      player: "",
+      player: '',
       error_msg: ''
     };
   }
@@ -64,7 +64,7 @@ class DungeonPage extends React.Component {
     if (e.target.value) {
       this.setState({ message: e.target.value });
     }
-    if (e.key && e.key === "Enter") {
+    if (e.key && e.key === 'Enter') {
       this.say();
     }
   };
@@ -74,13 +74,13 @@ class DungeonPage extends React.Component {
 
     axios
       .post(
-        mudAddress + "adv/say/",
+        mudAddress + 'adv/say/',
         { message, room: currentRoom.id.toString() },
         this.props.content
       )
       .then(data => {
         messageFeed.push({ message, player });
-        this.setState({ message: "", messageFeed });
+        this.setState({ message: '', messageFeed });
         // And some kind of alert?
       })
       .catch(err => {
@@ -94,7 +94,7 @@ class DungeonPage extends React.Component {
 
     // call to get the info for the room
     axios
-      .get(mudAddress + "adv/init/", this.props.content)
+      .get(mudAddress + 'adv/init/', this.props.content)
       .then(data => {
         this.setState({
           currentRoom: data.data,
@@ -105,13 +105,13 @@ class DungeonPage extends React.Component {
 
         // broadcasts arrival if others are around
         if (data.data.players && data.data.players.length) {
-          this.setState({ message: `${data.data.name} has arrived!`})
-          this.say()
+          this.setState({ message: `${data.data.name} has arrived!` });
+          this.say();
         }
 
         // binds the player to the current room's chat channel
         const channel = socket.subscribe(data.data.id.toString());
-        channel.bind("say", message => {
+        channel.bind('say', message => {
           if (message.player !== this.state.player) {
             messageFeed.push(message);
             this.setState({ messageFeed });
@@ -129,23 +129,21 @@ class DungeonPage extends React.Component {
 
     axios
       .post(
-        mudAddress + "adv/move/",
+        mudAddress + 'adv/move/',
         {
           direction
         },
         this.props.content
       )
       .then(data => {
-
         // if there is an error message from a direction command, state reflects that
-        const error_msg = data.data.error_msg
+        const error_msg = data.data.error_msg;
         if (error_msg === '') {
           socket.unsubscribe(this.state.currentRoom.id.toString());
 
           this.getRoomInfo();
         }
-        this.setState({ error_msg })
-
+        this.setState({ error_msg });
       })
       .catch(err => {
         console.log(err);
@@ -160,9 +158,9 @@ class DungeonPage extends React.Component {
     return (
       <main className={classes.content}>
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
+          <Grid direction="row" container spacing={3}>
             {/* Dungeon */}
-            <Grid item xs={12} md={12} lg={12}>
+            <Grid item xs={12} md={12} lg={8}>
               <Box
                 className={classes.dungeonHeight}
                 border={4}
@@ -173,49 +171,54 @@ class DungeonPage extends React.Component {
                 <Dungeon currentRoom={currentRoom.id.toString()} />
               </Box>
             </Grid>
-            {/* Room Information */}
-            <Grid item xs={12} md={4} lg={4}>
-              <Box
-                className={fixedHeightPaper}
-                border={4}
-                borderColor="#0136be"
-                borderRadius="5px"
-                color="white"
-              >
-                <RoomInfo
-                  currentRoom={currentRoom}
-                  getRoomInfo={this.getRoomInfo}
-                />
-              </Box>
-            </Grid>
-            {/* Game Commands */}
-            <Grid item xs={12} md={4} lg={4}>
-              <Box
-                className={fixedHeightPaper}
-                border={4}
-                borderColor="#0136be"
-                borderRadius="5px"
-                color="white"
-              >
-                <Commands directionMove={this.directionMove} error_msg={this.state.error_msg} />
-              </Box>
-            </Grid>
-            {/* Chat Box */}
-            <Grid item xs={12} md={4} lg={4}>
-              <Box
-                className={fixedHeightPaper}
-                border={4}
-                borderColor="#0136be"
-                borderRadius="5px"
-                color="white"
-              >
-                <ChatBox
-                  handleMessageInput={this.handleMessageInput}
-                  message={message}
-                  messageFeed={messageFeed}
-                  onSpeak={this.say}
-                />
-              </Box>
+            <Grid container item lg spacing={3} >
+              {/* Room Information */}
+              <Grid item xs={12} md={4} lg={10}>
+                <Box
+                  className={fixedHeightPaper}
+                  border={4}
+                  borderColor="#0136be"
+                  borderRadius="5px"
+                  color="white"
+                >
+                  <RoomInfo
+                    currentRoom={currentRoom}
+                    getRoomInfo={this.getRoomInfo}
+                  />
+                </Box>
+              </Grid>
+              {/* Game Commands */}
+              <Grid item xs={12} md={4} lg={10}>
+                <Box
+                  className={fixedHeightPaper}
+                  border={4}
+                  borderColor="#0136be"
+                  borderRadius="5px"
+                  color="white"
+                >
+                  <Commands
+                    directionMove={this.directionMove}
+                    error_msg={this.state.error_msg}
+                  />
+                </Box>
+              </Grid>
+              {/* Chat Box */}
+              <Grid item xs={12} md={4} lg={10}>
+                <Box
+                  className={fixedHeightPaper}
+                  border={4}
+                  borderColor="#0136be"
+                  borderRadius="5px"
+                  color="white"
+                >
+                  <ChatBox
+                    handleMessageInput={this.handleMessageInput}
+                    message={message}
+                    messageFeed={messageFeed}
+                    onSpeak={this.say}
+                  />
+                </Box>
+              </Grid>
             </Grid>
           </Grid>
         </Container>
