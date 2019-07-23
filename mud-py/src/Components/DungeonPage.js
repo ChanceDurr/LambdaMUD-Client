@@ -102,7 +102,10 @@ class DungeonPage extends React.Component {
         channel.bind("say", message => {
           if (message.player !== this.state.player) {
             messageFeed.push(message);
-            this.setState({ messageFeed });
+            this.setState({ messageFeed }, () => {
+              const feed = document.getElementById("feed");
+              feed.scrollTop = feed.scrollHeight;
+            });
           }
         });
       })
