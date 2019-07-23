@@ -129,8 +129,17 @@ class Login extends React.Component {
           this.props.login();
         })
         .catch(err => {
-          this.setState({ loginError: err.response.data.username[0] });
-          console.log(err.response.data.username[0]);
+          let errMessage
+          if (err.response.data.username) {
+            errMessage = err.response.data.username[0];
+          } else if (err.response.data.password1) {
+            errMessage = err.response.data.password1[0];
+          } else if (err.response.data.non_field_errors) {
+            errMessage = err.response.data.non_field_errors[0];
+          }
+
+          this.setState({ loginError: errMessage });
+          console.log(errMessage);
         });
     } // if typed passwords don't match
     else {
