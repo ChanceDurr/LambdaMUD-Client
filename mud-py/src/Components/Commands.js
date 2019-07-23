@@ -18,6 +18,7 @@ const CommandButton = withStyles({
 function Commands(props) {
   return (
     <Box>
+      <div>Please choose a direction.</div>
     <Box
       width="100%"
       height="10vh"
@@ -29,18 +30,30 @@ function Commands(props) {
       alignItems="center"
       p="10px"
     >
+      <div style={{display:"flex", flexDirection:"column", alignItems: "center"}} >
+        <div style={{margin: "auto"}}>North</div>
       <CommandButton onClick={val => props.directionMove(val)} name="n">
         N
       </CommandButton>
+      </div>
+      <div style={{display:"flex", flexDirection:"column", alignItems: "center"}} >
+        <div style={{margin: "auto"}}>South</div>
       <CommandButton onClick={props.directionMove} name="s">
         S
       </CommandButton>
+      </div>
+      <div style={{display:"flex", flexDirection:"column", alignItems: "center"}} >
+        <div style={{margin: "auto"}}>East</div>
       <CommandButton onClick={props.directionMove} name="e">
         E
       </CommandButton>
+      </div>
+      <div style={{display:"flex", flexDirection:"column", alignItems: "center"}} >
+        <div style={{margin: "auto"}}>West</div>
       <CommandButton onClick={props.directionMove} name="w">
         W
       </CommandButton>
+      </div>
     </Box>
       {/* this ternary displays a directional error message  */}
       {props.error_msg === "" ? null : <div> {props.error_msg} </div>}
