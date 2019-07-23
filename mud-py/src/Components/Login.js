@@ -1,5 +1,5 @@
-import React from 'react';
-import Register from './Register';
+import React from "react";
+import Register from "./Register";
 import {
   Container,
   Typography,
@@ -7,23 +7,23 @@ import {
   Button,
   makeStyles,
   withStyles
-} from '@material-ui/core';
-import axios from 'axios';
+} from "@material-ui/core";
+import axios from "axios";
 
-import { mudAddress } from '../address';
+import { mudAddress } from "../address";
 
 const useStylesLogin = makeStyles(theme => ({
   root: {
-    border: '1px solid #e2e2e1',
-    overflow: 'hidden',
+    border: "1px solid #e2e2e1",
+    overflow: "hidden",
     borderRadius: 4,
-    backgroundColor: '#888',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
-    '&:hover': {
-      backgroundColor: '#bbb'
+    backgroundColor: "#888",
+    transition: theme.transitions.create(["border-color", "box-shadow"]),
+    "&:hover": {
+      backgroundColor: "#bbb"
     },
-    '&$focused': {
-      backgroundColor: '#fff',
+    "&$focused": {
+      backgroundColor: "#fff",
       borderColor: theme.palette.primary.main
     }
   },
@@ -33,13 +33,13 @@ const useStylesLogin = makeStyles(theme => ({
 // the login/register buttons
 const PrimaryButton = withStyles({
   root: {
-    backgroundColor: 'darkorange',
-    color: 'black',
-    border: '6px solid firebrick',
-    borderRadius: '5px',
-    '&:hover': {
-      backgroundColor: '#cc6c00',
-      borderColor: 'darkred'
+    backgroundColor: "darkorange",
+    color: "black",
+    border: "6px solid firebrick",
+    borderRadius: "5px",
+    "&:hover": {
+      backgroundColor: "#cc6c00",
+      borderColor: "darkred"
     }
   }
 })(Button);
@@ -47,13 +47,13 @@ const PrimaryButton = withStyles({
 // switch to login or register button
 const SecondaryButton = withStyles({
   root: {
-    backgroundColor: '#222',
-    color: 'white',
-    border: '3px solid darkorchid',
-    borderRadius: '5px',
-    '&:hover': {
-      backgroundColor: '#000',
-      borderColor: '#9932CC'
+    backgroundColor: "#222",
+    color: "white",
+    border: "3px solid darkorchid",
+    borderRadius: "5px",
+    "&:hover": {
+      backgroundColor: "#000",
+      borderColor: "#9932CC"
     }
   }
 })(Button);
@@ -71,9 +71,9 @@ class Login extends React.Component {
     super(props);
     this.state = {
       register: false,
-      username: '',
-      password: '',
-      passwordCheck: '',
+      username: "",
+      password: "",
+      passwordCheck: "",
       passwordValid: true,
       passwordCheckValid: true
     };
@@ -96,12 +96,12 @@ class Login extends React.Component {
     e.preventDefault();
     const { username, password } = this.state;
     axios
-      .post(mudAddress + 'login/', {
+      .post(mudAddress + "login/", {
         username: username,
         password: password
       })
       .then(data => {
-        localStorage.setItem('Authorization', data.data.key);
+        localStorage.setItem("Authorization", data.data.key);
         this.props.login();
       })
       .catch(err => {
@@ -115,13 +115,13 @@ class Login extends React.Component {
     const { username, password, passwordCheck } = this.state;
     if (password === passwordCheck) {
       axios
-        .post(mudAddress + 'registration/', {
+        .post(mudAddress + "registration/", {
           username: username,
           password1: password,
           password2: passwordCheck
         })
         .then(data => {
-          localStorage.setItem('Authorization', data.data.key);
+          localStorage.setItem("Authorization", data.data.key);
           this.props.login();
         })
         .catch(err => {
@@ -132,8 +132,8 @@ class Login extends React.Component {
       this.setState(prev => {
         return {
           passwordCheckValid: !prev.passwordCheckValid,
-          password: '',
-          passwordCheck: ''
+          password: "",
+          passwordCheck: ""
         };
       });
     }
@@ -145,7 +145,7 @@ class Login extends React.Component {
     return (
       <Container
         maxWidth="xs"
-        style={{ color: 'gold', height: 'calc(100vh - 168px)' }}
+        style={{ color: "gold", height: "calc(100vh - 168px)" }}
       >
         {// register coponenet displays on toggle
         this.state.register ? (
@@ -165,10 +165,10 @@ class Login extends React.Component {
         ) : (
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              marginTop: '10vh'
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              marginTop: "10vh"
             }}
           >
             <Typography variant="h4">Login</Typography>
@@ -212,7 +212,7 @@ class Login extends React.Component {
                 color="primary"
                 fullWidth
                 variant="outlined"
-                style={{ margin: '10px 0' }}
+                style={{ margin: "10px 0" }}
               >
                 Don't have an account? Sign Up
               </SecondaryButton>
