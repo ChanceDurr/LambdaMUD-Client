@@ -2,7 +2,7 @@ import React from 'react';
 import { Typography } from '@material-ui/core';
 
 function Register(props) {
-  const {passwordValid, passwordCheckValid} = props
+  const { passwordValid, passwordCheckValid, loginError } = props;
 
   return (
     <div
@@ -14,7 +14,7 @@ function Register(props) {
       }}
     >
       <Typography variant="h4">Register</Typography>
-      <form onSubmit={props.registrationHandler} >
+      <form onSubmit={props.registrationHandler}>
         <props.LoginTextField
           variant="filled"
           id="username"
@@ -58,7 +58,6 @@ function Register(props) {
           fullWidth
           variant="contained"
           color="primary"
-
         >
           Register
         </props.PrimaryButton>
@@ -72,6 +71,7 @@ function Register(props) {
           Already have an account? Sign In
         </props.SecondaryButton>
       </form>
+      {loginError ? loginError : null}
     </div>
   );
 }
