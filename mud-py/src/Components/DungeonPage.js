@@ -59,20 +59,10 @@ class DungeonPage extends React.Component {
     };
   }
 
-  handleMessageInput = e => {
-    e.persist();
-    if (e.target.value) {
-      this.setState({ message: e.target.value });
-    }
-    if (e.key && e.key === "Enter") {
-      this.say();
-    }
-  };
+  say = message => {
+    const { currentRoom, messageFeed, player } = this.state;
 
-  say = () => {
-    const { message, currentRoom, messageFeed, player } = this.state;
-
-    axios
+    return axios
       .post(
         mudAddress + "adv/say/",
         { message, room: currentRoom.id.toString() },
@@ -80,11 +70,10 @@ class DungeonPage extends React.Component {
       )
       .then(data => {
         messageFeed.push({ message, player });
-        this.setState({ message: "", messageFeed });
-        // And some kind of alert?
+        return true;
       })
       .catch(err => {
-        console.log(err);
+        throw err;
       });
   };
 
@@ -99,7 +88,6 @@ class DungeonPage extends React.Component {
         this.setState({
           currentRoom: data.data,
           player: data.data.name,
-          message: "",
           messageFeed: []
         });
 
@@ -152,7 +140,7 @@ class DungeonPage extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { currentRoom, messageFeed, message } = this.state;
+    const { currentRoom, messageFeed } = this.state;
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     return (
@@ -213,7 +201,6 @@ class DungeonPage extends React.Component {
                 >
                   <ChatBox
                     handleMessageInput={this.handleMessageInput}
-                    message={message}
                     messageFeed={messageFeed}
                     onSpeak={this.say}
                   />

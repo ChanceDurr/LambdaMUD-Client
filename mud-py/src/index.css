@@ -1,6 +1,7 @@
 body {
   margin: 0;
-  background-color: black;
+  background: black;
+  background-color: black!important;
 }
 
 code {
